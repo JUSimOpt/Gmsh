@@ -4,6 +4,7 @@ function [status,cmdout] = RunGmshScript(scriptFile,varargin)
 % Parameters:
 % 'gmshPath',gmshPath
 % 'verbose','on'/'off'
+% 'gmeshArgs', 'args'  - Optional gmesh command line arguments 
 %
 % Keep a copy of the executable "gmsh" in the Gmsh folder.
 %
@@ -19,17 +20,19 @@ IP = inputParser;
 addParameter(IP,'gmshPath',default_gmshPath)
 addParameter(IP,'OutFile',fullfile(pwd,'mesh.msh'));
 addParameter(IP,'verbose','off');
+addParameter(IP,'gmeshArgs','');
 parse(IP,varargin{:});
 PR = IP.Results;
 gmshPath = PR.gmshPath;
 outputFilePath = PR.OutFile;
 verbose = PR.verbose;
+gmeshArgs = PR.gmeshArgs;
 verbose = strcmpi(verbose,'on');
 if  ~fileExist(gmshPath)
     error(['Gmsh is not found at the location "',gmshPath,'"!'])
 end
 %%
-command = [gmshPath,' -0 -o "',outputFilePath,'" "',scriptFile,'"'];
+command = [gmshPath,' ',gmeshArgs,' -0 -o "',outputFilePath,'" "',scriptFile,'"'];
 
 if verbose
     [status,cmdout] = system(command,'-echo');
