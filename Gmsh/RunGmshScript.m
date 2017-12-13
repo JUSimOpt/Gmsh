@@ -32,7 +32,7 @@ if  ~fileExist(gmshPath)
     error(['Gmsh is not found at the location "',gmshPath,'"!'])
 end
 %%
-command = [gmshPath,' ',gmeshArgs,' -0 -o "',outputFilePath,'" "',scriptFile,'"'];
+command = ['"',gmshPath,'" ',gmeshArgs,' -0 -o "',outputFilePath,'" "',scriptFile,'"'];
 
 if verbose
     [status,cmdout] = system(command,'-echo');
